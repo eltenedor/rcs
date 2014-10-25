@@ -72,7 +72,7 @@ if [ -x /usr/bin/dircolors ]; then
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
 
-    #alias grep='grep --color=auto'
+    alias grep='grep --color=auto'
     #alias fgrep='fgrep --color=auto'
     #alias egrep='egrep --color=auto'
 fi
@@ -98,31 +98,116 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+#########################################################################
+
+#general variables
+export PATH=/usr/local/bin:/usr/bin:/bin
+
 # some aliases
 alias ..='cd ..'
-alias thesis='cd /home/fabian/Thesis/pet_src'
-alias extras='cd /home/fabian/Thesis/ExtrasImWeb/2dgl/sg'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias sl='ls'
+alias LS='ls'
+alias reset_paths='export PATH=/usr/bin:/bin LD_LIBRARY_PATH=/usr/lib:/lib MANPATH=/usr/share/man:/usr/local/share/man; unset CPATH INCLUDE INSTALL_DIR INTEL_LICENSE_FILE IPPROOT LIBRARY_PATH LM_LICENSE_FILE MIC_LD_LIBRARY_PATH MKLROOT NLSPATH PETSC_DIR TBBROOT'
+alias reset_env='reset_paths; unset PETSC_DIR PETSC_ARCH'
+alias ed='ed -p:'
+alias chrome='google-chrome --disk-cache-dir="/tmp/ram/ &>/dev/null &"'
+alias weed='echo `date` >> /data/documents/consumation.log; head -n 24 /data/documents/consumation.log ; tail -n 10 /data/documents/consumation.log'
+alias rep='cd caffa.MTM/block3d.MB/; cp ../../param3d.inb .; make clip-build EXPATH=../../; ...; ./block3d.MB.lnx ; cd caffa.MTM/caffa3d.MB/; cp ../../param3d.inc .; make opt-gnu-analytical EXPATH=../../; ...'
  
-source /opt/openfoam211/etc/bashrc
-
-#export PETSC_DIR=/home/fabian/util/petsc/petsc-3.3-p5
-export PETSC_DIR=/home/fabian/util/petsc/petsc-3.3-p6
-export PETSC_ARCH=arch-linux2-c-debug
-# add petscmpirun
-export PATH="$PETSC_DIR"/bin:"$PATH"
-
 # change the command prompt
 PS1="\[\033]0;\u@\h: \w\007\]\W\\$ "
 PS2='>> '
 PS3='>>> '
 export PS1 PS2 PS3
 
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=50000
+HISTFILESIZE=500000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
 # Linux Hacks
 function mkdircd () { mkdir -p "$@" && eval cd "\"\$$#\"";}
-
-# OpenFOAM
-source /opt/openfoam211/etc/bashrc
 
 #gvim function
 function gvim () { (/usr/bin/gvim -f "$@" &) }
 
+#load intelCompilers
+#. /software/intel/bin/compilervars.sh intel64
+
+#openmpi
+#export PATH=/software/openmpi/gnu/1.6.5/bin:$PATH
+#export PATH=/software/openmpi/gnu/1.8.1/bin:$PATH
+export PATH=/software/openmpi/gnu/1.8.2/bin:$PATH
+#export PATH=/software/openmpi/intel/1.6.5/bin:$PATH
+
+#export LD_LIBRARY_PATH=/software/openmpi/gnu/1.6.5/lib:${LD_LIBRARY_PATH}
+#export LD_LIBRARY_PATH=/software/openmpi/gnu/1.8.1/lib:${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=/software/openmpi/gnu/1.8.2/lib:${LD_LIBRARY_PATH}
+#export LD_LIBRARY_PATH=/software/openmpi/intel/1.6.5/lib:${LD_LIBRARY_PATH}
+
+#mpich
+#export PATH=/software/mpich/gnu/3.1.2/bin:$PATH
+
+#PETSc
+#export PETSC_DIR=/software/petsc/gnu/3.5.1/arch-openmpi-dbg
+#export PETSC_DIR=/software/petsc/gnu/3.5.1/arch-openmpi-opt
+#export PETSC_DIR=/software/petsc/gnu/3.5.2/arch-openmpi-dbg
+export PETSC_DIR=/software/petsc/gnu/git/arch-openmpi-opt
+#export PETSC_DIR=/software/petsc/gnu/git/arch-openmpi-dbg
+
+#export PETSC_DIR=/software/petsc/gnu/3.4.3/arch-openmpi
+#export PETSC_DIR=/software/petsc/intel/3.4.3/arch-openmpi-mkl
+#export PETSC_DIR=/software/petsc/intel/3.4.3/arch-openmpi-intel-dbg
+#export PETSC_DIR=/software/petsc/intel/3.4.3/arch-openmpi-intel-mkl-static
+#export PETSC_DIR=/software/petsc/intel/3.4.2/arch-openmpi-intel-mkl-flags
+
+export LD_LIBRARY_PATH=${PETSC_DIR}/lib:${LD_LIBRARY_PATH}
+
+#BLAS/LAPACK
+export LD_LIBRARY_PATH=/software/netlib/blas/lib:/software/netlib/lapack/lib:${LD_LIBRARY_PATH}
+
+#clipper
+export LD_LIBRARY_PATH=/software/clipper/gnu/5.1.6/lib:$LD_LIBRARY_PATH
+#export LD_LIBRARY_PATH=/software/clipper/gnu/6.1.3/lib:$LD_LIBRARY_PATH
+
+#oce
+export LD_LIBRARY_PATH=/software/oce/lib:$LD_LIBRARY_PATH
+
+#Valgrind
+#export PATH=/software/valgrind/intel/3.8.1/bin:$PATH
+#export PATH=/software/valgrind/gnu/3.8.1/bin:$PATH
+
+#OpenMP
+export OMP_NUM_THREADS=1
+
+#aribas
+#export PATH=/software/aribas/1.64/bin:$PATH
+
+#maple
+#export PATH=/software/mapleplayer:$PATH
+
+#zoltan
+#export LD_LIBRARY_PATH=/software/zoltan/3.8/lib:$LD_LIBRARY_PATH
+
+#openFOAM
+#. /software/OpenFOAM/OpenFOAM-2.2.2/etc/bashrc
+
+#eclipse
+#alias eclipse="/software/eclipse/kepler/eclipse"
+alias eclipse="/software/eclipse/luna/eclipse"
+
+#texlive
+export PATH=/software/texlive/2014/bin/x86_64-linux:$PATH
+
+#i3
+export PATH=/home/fabian/bin:$PATH
+
+#java
+export PATH=/software/java/jdk1.7.0_55/jre/bin:$PATH
