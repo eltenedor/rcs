@@ -1,0 +1,6 @@
+#!/bin/bash
+
+timestamp=`date +"%m%d%Y%H%M%S"`
+outfile="$2"/"$timestamp"_"$1"
+
+cp -v -i $1 $outfile
