@@ -1,0 +1,6 @@
+#!/bin/bash
+# select area and copy screenshot to clipboard
+# taken from https://ubuntu-mate.community/t/taking-screenshots-of-an-area-doesnt-work-via-keyboard-shortcut/13172/8
+# create shortcut for 'gnome-screenshot -a -c' where gnome-screenshot is this bash script
+sleep 0.5
+exec /usr/bin/gnome-screenshot $@
